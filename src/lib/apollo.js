@@ -6,13 +6,13 @@ import { createClient } from 'graphql-ws'
 
 // HTTP link for queries and mutations
 const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_HASURA_GRAPHQL_URL || 'https://your-nhost-subdomain.hasura.your-region.nhost.run/v1/graphql'
+  uri: process.env.REACT_APP_HASURA_GRAPHQL_URL || 'https://wsyhhjiocamicltpcfdd.hasura.ap-south-1.nhost.run/v1/graphql'
 })
 
 // WebSocket link for subscriptions
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: process.env.REACT_APP_HASURA_GRAPHQL_WS_URL || 'wss://your-nhost-subdomain.hasura.your-region.nhost.run/v1/graphql',
+    url: process.env.REACT_APP_HASURA_GRAPHQL_WS_URL || 'wss://wsyhhjiocamicltpcfdd.hasura.ap-south-1.run/v1/graphql',
     connectionParams: () => {
       const token = localStorage.getItem('nhostAccessToken')
       return {

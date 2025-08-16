@@ -102,10 +102,10 @@ Frontend (React) → Nhost Auth → Hasura GraphQL → Hasura Actions → n8n �
 Create `.env` file in the React app:
 
 ```env
-REACT_APP_NHOST_SUBDOMAIN=your-nhost-subdomain
-REACT_APP_NHOST_REGION=your-region
-REACT_APP_HASURA_GRAPHQL_URL=https://your-subdomain.hasura.your-region.nhost.run/v1/graphql
-REACT_APP_HASURA_GRAPHQL_WS_URL=wss://your-subdomain.hasura.your-region.nhost.run/v1/graphql
+REACT_APP_NHOST_SUBDOMAIN=wsyhhjiocamicltpcfdd
+REACT_APP_NHOST_REGION=ap-south-1
+REACT_APP_HASURA_GRAPHQL_URL=https://wsyhhjiocamicltpcfdd.hasura.ap-south-1.nhost.run/v1/graphql
+REACT_APP_HASURA_GRAPHQL_WS_URL=wss://wsyhhjiocamicltpcfdd.hasura.ap-south-1.run/v1/graphql
 ```
 
 ### 4.2 Update Nhost Configuration

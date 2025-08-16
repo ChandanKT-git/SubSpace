@@ -1,8 +1,13 @@
 -- Database Schema for AI Chatbot Application
--- This schema is designed for Hasura/PostgreSQL
+-- Designed for Hasura/PostgreSQL on Nhost
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Safe replacement for auth.uid(), works in Nhost
+CREATE FUNCTION public.uid() RETURNS uuid AS $$
+  SELECT current_setting('request.jwt.claims', true)::json->>'sub'::uuid;
+$$ LANGUAGE sql STABLE;
 
 -- Chats table
 CREATE TABLE chats (
@@ -37,7 +42,7 @@ BEGIN
     NEW.updated_at = NOW();
     RETURN NEW;
 END;
-$$ language 'plpgsql';
+$$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER update_chats_updated_at 
     BEFORE UPDATE ON chats 
@@ -47,24 +52,22 @@ CREATE TRIGGER update_messages_updated_at
     BEFORE UPDATE ON messages 
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Row Level Security (RLS) Policies
-
--- Enable RLS on tables
+-- Enable Row Level Security
 ALTER TABLE chats ENABLE ROW LEVEL SECURITY;
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 
 -- Chats policies
 CREATE POLICY "Users can view their own chats" ON chats
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT USING (public.uid() = user_id);
 
 CREATE POLICY "Users can insert their own chats" ON chats
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT WITH CHECK (public.uid() = user_id);
 
 CREATE POLICY "Users can update their own chats" ON chats
-    FOR UPDATE USING (auth.uid() = user_id);
+    FOR UPDATE USING (public.uid() = user_id);
 
 CREATE POLICY "Users can delete their own chats" ON chats
-    FOR DELETE USING (auth.uid() = user_id);
+    FOR DELETE USING (public.uid() = user_id);
 
 -- Messages policies
 CREATE POLICY "Users can view messages from their chats" ON messages
@@ -72,7 +75,7 @@ CREATE POLICY "Users can view messages from their chats" ON messages
         EXISTS (
             SELECT 1 FROM chats 
             WHERE chats.id = messages.chat_id 
-            AND chats.user_id = auth.uid()
+            AND chats.user_id = public.uid()
         )
     );
 
@@ -81,7 +84,7 @@ CREATE POLICY "Users can insert messages to their chats" ON messages
         EXISTS (
             SELECT 1 FROM chats 
             WHERE chats.id = messages.chat_id 
-            AND chats.user_id = auth.uid()
+            AND chats.user_id = public.uid()
         )
     );
 
@@ -90,7 +93,7 @@ CREATE POLICY "Users can update messages in their chats" ON messages
         EXISTS (
             SELECT 1 FROM chats 
             WHERE chats.id = messages.chat_id 
-            AND chats.user_id = auth.uid()
+            AND chats.user_id = public.uid()
         )
     );
 
@@ -99,7 +102,6 @@ CREATE POLICY "Users can delete messages from their chats" ON messages
         EXISTS (
             SELECT 1 FROM chats 
             WHERE chats.id = messages.chat_id 
-            AND chats.user_id = auth.uid()
+            AND chats.user_id = public.uid()
         )
     );
-
