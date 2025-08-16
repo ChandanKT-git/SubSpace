@@ -119,13 +119,6 @@ export const nhost = new NhostClient({
 })
 ```
 
-### 4.3 Switch to Real Authentication
-
-Replace mock authentication with real Nhost:
-
-1. Update `src/App.jsx` to use `AuthProvider` from `contexts/AuthContext.jsx`
-2. Use `ProtectedRoute` and `ChatInterface` components
-3. Test authentication flow
 
 ## Phase 5: Testing
 

@@ -1,16 +1,18 @@
-import AuthProvider from './contexts/MockAuthContext'
-import MockProtectedRoute from './components/MockProtectedRoute'
-import MockGraphQLChatInterface from './components/chat/MockGraphQLChatInterface'
+import AuthProvider from './contexts/AuthContext'
+import ProtectedRoute from './components/ProtectedRoute'
+import GraphQLChatInterface from './components/chat/GraphQLChatInterface'
 import './App.css'
 
 function App() {
   return (
     <AuthProvider>
-      <MockProtectedRoute>
-        <MockGraphQLChatInterface />
-      </MockProtectedRoute>
+      <ProtectedRoute>
+        <GraphQLChatInterface />
+      </ProtectedRoute>
     </AuthProvider>
   )
 }
 
 export default App
+
+

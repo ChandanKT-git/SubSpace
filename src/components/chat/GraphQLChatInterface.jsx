@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useQuery, useMutation, useSubscription } from '@apollo/client'
-import { useAuth } from '../../contexts/MockAuthContext'
+import { useAuth } from '../../contexts/AuthContext'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'

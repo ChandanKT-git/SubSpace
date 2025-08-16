@@ -15,12 +15,6 @@ Successfully created a full-stack AI chatbot application with modern architectur
 
 **Public URL**: https://3000-iyhrw3yk04w2dm09a53a5-fa5fdbef.manusvm.computer
 
-### Demo Credentials
-- Email: Any email (demo@example.com)
-- Password: Any password (demo123)
-
-*Note: Currently using mock authentication for demonstration. In production, this would be replaced with real Nhost authentication.*
-
 ## ✅ Requirements Compliance
 
 ### Authentication ✓
