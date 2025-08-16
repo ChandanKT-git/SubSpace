@@ -5,7 +5,7 @@ actions:
   - name: sendMessage
     definition:
       kind: synchronous
-      handler: https://your-n8n-instance.com/webhook/chatbot
+      handler: https://chandankt.app.n8n.cloud/webhook/chatbot
       forward_client_headers: true
       headers:
         - name: X-Hasura-Admin-Secret

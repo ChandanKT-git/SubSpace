@@ -51,7 +51,7 @@ Frontend (React) → Nhost Auth → Hasura GraphQL → Hasura Actions → n8n �
 1. Go to Actions tab in Hasura Console
 2. Create new action: `sendMessage`
 3. Use configuration from `database/hasura-action-config.yaml`
-4. Set handler URL to your n8n webhook (configure in Phase 2)
+4. Set handler URL to `https://chandankt.app.n8n.cloud/webhook/chatbot`
 
 ## Phase 2: n8n Workflow Setup
 
@@ -102,10 +102,10 @@ Frontend (React) → Nhost Auth → Hasura GraphQL → Hasura Actions → n8n �
 Create `.env` file in the React app:
 
 ```env
-REACT_APP_NHOST_SUBDOMAIN=your-nhost-subdomain
-REACT_APP_NHOST_REGION=your-region
-REACT_APP_HASURA_GRAPHQL_URL=https://your-subdomain.hasura.your-region.nhost.run/v1/graphql
-REACT_APP_HASURA_GRAPHQL_WS_URL=wss://your-subdomain.hasura.your-region.nhost.run/v1/graphql
+REACT_APP_NHOST_SUBDOMAIN=wsyhhjiocamicltpcfdd
+REACT_APP_NHOST_REGION=ap-south-1
+REACT_APP_HASURA_GRAPHQL_URL=https://wsyhhjiocamicltpcfdd.hasura.ap-south-1.nhost.run/v1/graphql
+REACT_APP_HASURA_GRAPHQL_WS_URL=wss://wsyhhjiocamicltpcfdd.hasura.ap-south-1.run/v1/graphql
 ```
 
 ### 4.2 Update Nhost Configuration
