@@ -1,0 +1,122 @@
+# Complete Hasura Action Configuration
+# This file contains the complete configuration for the sendMessage action
+
+# Action Definition
+actions:
+  - name: sendMessage
+    definition:
+      kind: synchronous
+      handler: "{{N8N_WEBHOOK_URL}}"
+      forward_client_headers: true
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: hasura_graphql_url
+          value: "{{HASURA_GRAPHQL_ENDPOINT}}"
+      timeout: 30
+    comment: "Send message to AI chatbot via n8n workflow"
+
+# Custom Types
+custom_types:
+  input_objects:
+    - name: SendMessageInput
+      fields:
+        - name: chatId
+          type: uuid!
+          description: "ID of the chat to send message to"
+        - name: message
+          type: String!
+          description: "Message content to send to the chatbot"
+
+  objects:
+    - name: SendMessageOutput
+      fields:
+        - name: success
+          type: Boolean!
+          description: "Whether the message was processed successfully"
+        - name: message
+          type: String!
+          description: "Status message"
+        - name: botResponse
+          type: String
+          description: "The chatbot's response (null if failed)"
+
+# GraphQL Schema
+action_schema: |
+  type Mutation {
+    sendMessage(chatId: uuid!, message: String!): SendMessageOutput!
+  }
+
+# Permissions
+permissions:
+  - role: user
+    comment: "Allow authenticated users to send messages to their own chats"
+
+# Environment Variables Required
+environment_variables:
+  - N8N_WEBHOOK_URL
+  - HASURA_GRAPHQL_ENDPOINT
+  - HASURA_GRAPHQL_ADMIN_SECRET
+
+# Example Usage in GraphQL
+example_usage: |
+  mutation SendMessageToBot($chatId: uuid!, $message: String!) {
+    sendMessage(chatId: $chatId, message: $message) {
+      success
+      message
+      botResponse
+    }
+  }
+
+# Example Variables
+example_variables: |
+  {
+    "chatId": "123e4567-e89b-12d3-a456-426614174000",
+    "message": "Hello, how are you?"
+  }
+
+# Expected Response
+example_response: |
+  {
+    "data": {
+      "sendMessage": {
+        "success": true,
+        "message": "Message processed successfully",
+        "botResponse": "Hello! I'm doing well, thank you for asking. How can I help you today?"
+      }
+    }
+  }
+
+# Error Response Example
+example_error_response: |
+  {
+    "data": {
+      "sendMessage": {
+        "success": false,
+        "message": "Chat not found or access denied",
+        "botResponse": null
+      }
+    }
+  }
+
+# Setup Instructions
+setup_instructions: |
+  1. Go to Hasura Console > Actions
+  2. Click "Create" to create a new action
+  3. Enter action name: sendMessage
+  4. Set action definition:
+     - Type: Mutation
+     - Handler: Your n8n webhook URL
+     - Forward client headers: true
+  5. Add custom types (SendMessageInput, SendMessageOutput)
+  6. Set permissions for 'user' role
+  7. Test the action using the GraphQL playground
+
+# Security Notes
+security_notes: |
+  - The action validates user authentication via session variables
+  - Chat ownership is verified in the n8n workflow
+  - All database operations use admin secret for security
+  - Input validation prevents malicious requests
+  - Rate limiting should be implemented at the API gateway level
+

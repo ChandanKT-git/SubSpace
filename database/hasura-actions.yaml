@@ -1,0 +1,72 @@
+# Hasura Actions Configuration
+# This defines the sendMessage action that triggers the n8n workflow
+
+actions:
+  - name: sendMessage
+    definition:
+      kind: synchronous
+      handler: https://your-n8n-instance.com/webhook/chatbot
+      forward_client_headers: true
+      headers:
+        - name: X-Hasura-Admin-Secret
+          value_from_env: HASURA_GRAPHQL_ADMIN_SECRET
+    
+    # GraphQL type definitions
+    types:
+      - name: SendMessageInput
+        definition: |
+          input SendMessageInput {
+            chatId: uuid!
+            message: String!
+          }
+      
+      - name: SendMessageOutput
+        definition: |
+          type SendMessageOutput {
+            success: Boolean!
+            message: String!
+            botResponse: String
+          }
+    
+    # Action definition
+    action_definition:
+      type: mutation
+      arguments:
+        - name: chatId
+          type: uuid!
+        - name: message
+          type: String!
+      output_type: SendMessageOutput!
+    
+    # Permissions
+    permissions:
+      - role: user
+        comment: "Allow authenticated users to send messages"
+
+# Custom types for the action
+custom_types:
+  scalars: []
+  enums: []
+  input_objects:
+    - name: SendMessageInput
+      fields:
+        - name: chatId
+          type: uuid!
+        - name: message
+          type: String!
+  
+  objects:
+    - name: SendMessageOutput
+      fields:
+        - name: success
+          type: Boolean!
+        - name: message
+          type: String!
+        - name: botResponse
+          type: String
+
+# Environment variables needed
+environment_variables:
+  - HASURA_GRAPHQL_ADMIN_SECRET
+  - N8N_WEBHOOK_URL
+
